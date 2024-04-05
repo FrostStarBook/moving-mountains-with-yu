@@ -9,20 +9,22 @@ mod tests {
     use dojo::test_utils::{spawn_test_world, deploy_contract};
 
     // import test utils
-    use dojo_starter::{
+    use moving_mountains_with_yu::{
+        models::{
+            base::{Base, base}, people::{People, people},
+            architecture::{Architecture, Mold, architecture}
+        },
         systems::{actions::{actions, IActionsDispatcher, IActionsDispatcherTrait}},
-        models::{position::{Position, Vec2, position}, moves::{Moves, Direction, moves}}
     };
-
 
     #[test]
     #[available_gas(30000000)]
-    fn test_move() {
+    fn test_click() {
         // caller
         let caller = starknet::contract_address_const::<0x0>();
 
         // models
-        let mut models = array![position::TEST_CLASS_HASH, moves::TEST_CLASS_HASH];
+        let mut models = array![base::TEST_CLASS_HASH, people::TEST_CLASS_HASH];
 
         // deploy world with models
         let world = spawn_test_world(models);
@@ -35,28 +37,19 @@ mod tests {
         // call spawn()
         actions_system.spawn();
 
-        // call move with direction right
-        actions_system.move(Direction::Right);
+        actions_system.click();
 
         // Check world state
-        let moves = get!(world, caller, Moves);
+        let people = get!(world, caller, People);
 
-        // casting right direction
-        let right_dir_felt: felt252 = Direction::Right.into();
+        // check click
+        assert(people.people_count == 1, 'click 1 is wrong');
 
-        // check moves
-        assert(moves.remaining == 99, 'moves is wrong');
+        actions_system.click();
 
-        // check last direction
-        assert(moves.last_direction.into() == right_dir_felt, 'last direction is wrong');
-
-        // get new_position
-        let new_position = get!(world, caller, Position);
-
-        // check new position x
-        assert(new_position.vec.x == 11, 'position x is wrong');
-
-        // check new position y
-        assert(new_position.vec.y == 10, 'position y is wrong');
+        // Check world state
+        let people_2 = get!(world, caller, People);
+        // check click
+        assert(people_2.people_count == 2, 'click 2 is wrong');
     }
 }

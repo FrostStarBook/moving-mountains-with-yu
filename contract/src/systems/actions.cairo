@@ -2,7 +2,15 @@
 #[starknet::interface]
 trait IActions<TContractState> {
     fn spawn(self: @TContractState);
-    fn move(self: @TContractState, direction: dojo_starter::models::moves::Direction);
+    fn click(self: @TContractState);
+// fn upgrade_base(self: @TContractState, base: moving_mountains_with_yu::models::base::Base);
+// fn buy_architecture(
+//     self: @TContractState, architecture: moving_mountains_with_yu::models::architecture::Architecture
+// );
+// fn upgrade_architecture(
+//     self: @TContractState, architecture: moving_mountains_with_yu::models::architecture::Architecture
+// );
+// fn auto(self: @TContractState);
 }
 
 // dojo decorator
@@ -11,38 +19,24 @@ mod actions {
     use super::IActions;
 
     use starknet::{ContractAddress, get_caller_address};
-    use dojo_starter::models::{position::{Position, Vec2}, moves::{Moves, Direction}};
+    use moving_mountains_with_yu::models::{
+        base::Base, people::People, architecture::{Architecture, Mold}
+    };
 
-    // declaring custom event struct
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
-        Moved: Moved,
+        Peopled: Peopled,
     }
 
-    // declaring custom event struct
     #[derive(Drop, starknet::Event)]
-    struct Moved {
+    struct Peopled {
         player: ContractAddress,
-        direction: Direction
+        people_count: u256,
     }
 
-    fn next_position(mut position: Position, direction: Direction) -> Position {
-        match direction {
-            Direction::None => { return position; },
-            Direction::Left => { position.vec.x -= 1; },
-            Direction::Right => { position.vec.x += 1; },
-            Direction::Up => { position.vec.y -= 1; },
-            Direction::Down => { position.vec.y += 1; },
-        };
-        position
-    }
-
-
-    // impl: implement functions specified in trait
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
-        // ContractState is defined by system decorator expansion
         fn spawn(self: @ContractState) {
             // Access the world dispatcher for reading.
             let world = self.world_dispatcher.read();
@@ -50,49 +44,38 @@ mod actions {
             // Get the address of the current caller, possibly the player's address.
             let player = get_caller_address();
 
-            // Retrieve the player's current position from the world.
-            let position = get!(world, player, (Position));
+            // 获取基础点击数值
+            let base = get!(world, player, (Base));
 
-            // Retrieve the player's move data, e.g., how many moves they have left.
-            let moves = get!(world, player, (Moves));
+            // 获取基础建筑
+            let architecture = get!(world, player, (Architecture));
 
             // Update the world state with the new data.
-            // 1. Set players moves to 10
-            // 2. Move the player's position 100 units in both the x and y direction.
             set!(
                 world,
                 (
-                    Moves { player, remaining: 100, last_direction: Direction::None },
-                    Position { player, vec: Vec2 { x: 10, y: 10 } },
+                    Base { player, add_people: 1, lv: 1 },
+                    Architecture { player, add_people: 10, lv: 1, mold: Mold::Briq },
                 )
             );
         }
 
-        // Implementation of the move function for the ContractState struct.
-        fn move(self: @ContractState, direction: Direction) {
+        fn click(self: @ContractState) {
             // Access the world dispatcher for reading.
             let world = self.world_dispatcher.read();
 
             // Get the address of the current caller, possibly the player's address.
             let player = get_caller_address();
 
-            // Retrieve the player's current position and moves data from the world.
-            let (mut position, mut moves) = get!(world, player, (Position, Moves));
+            let (mut base, mut people) = get!(world, player, (Base, People));
 
-            // Deduct one from the player's remaining moves.
-            moves.remaining -= 1;
+            // 按照base 等级增加
+            people.people_count += base.add_people;
+            let people_count = people.people_count;
 
-            // Update the last direction the player moved in.
-            moves.last_direction = direction;
+            set!(world, (people));
 
-            // Calculate the player's next position based on the provided direction.
-            let next = next_position(position, direction);
-
-            // Update the world state with the new moves data and position.
-            set!(world, (moves, next));
-
-            // Emit an event to the world to notify about the player's move.
-            emit!(world, Moved { player, direction });
+            emit!(world, Peopled { player, people_count });
         }
     }
 }

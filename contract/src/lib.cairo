@@ -3,8 +3,9 @@ mod systems {
 }
 
 mod models {
-    mod moves;
-    mod position;
+    mod base;
+    mod people;
+    mod architecture;
 }
 
 mod tests {
