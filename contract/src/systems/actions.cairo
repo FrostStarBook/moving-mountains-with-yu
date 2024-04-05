@@ -123,9 +123,9 @@ mod actions {
             let (mut architecture, mut people) = get!(world, player, (Architecture, People));
 
             // 购买建筑 ，需要消耗指定的 people
-            people.people_count -= architecture.lv * 1000;
+            people.people_count -= architecture.lv * 20000;
             architecture.lv += 1;
-            architecture.add_people += 100;
+            architecture.add_people += 500;
             let people_count = people.people_count;
 
             set!(world, (people, architecture));
