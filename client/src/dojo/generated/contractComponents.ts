@@ -2,41 +2,45 @@
 
 import { defineComponent, Type as RecsType, World } from "@dojoengine/recs";
 
-export type ContractComponents = Awaited<
-    ReturnType<typeof defineContractComponents>
->;
+export type ContractComponents = Awaited<ReturnType<typeof defineContractComponents>>;
 
 export function defineContractComponents(world: World) {
     return {
-        Moves: (() => {
+        Architecture: (() => {
             return defineComponent(
                 world,
-                {
-                    player: RecsType.BigInt,
-                    remaining: RecsType.Number,
-                    last_direction: RecsType.Number,
-                },
+                { player: RecsType.BigInt, add_people: RecsType.BigInt, lv: RecsType.BigInt, mold: RecsType.Number },
                 {
                     metadata: {
-                        name: "Moves",
-                        types: ["contractaddress", "u8", "enum"],
-                        customTypes: ["Direction"],
+                        name: "Architecture",
+                        types: ["contractaddress", "u256", "u256", "enum"],
+                        customTypes: ["Mold"],
                     },
                 }
             );
         })(),
-        Position: (() => {
+        Base: (() => {
             return defineComponent(
                 world,
-                {
-                    player: RecsType.BigInt,
-                    vec: { x: RecsType.Number, y: RecsType.Number },
-                },
+                { player: RecsType.BigInt, add_people: RecsType.BigInt, lv: RecsType.BigInt },
                 {
                     metadata: {
-                        name: "Position",
-                        types: ["contractaddress", "u32", "u32"],
-                        customTypes: ["Vec2"],
+                        name: "Base",
+                        types: ["contractaddress", "u256", "u256"],
+                        customTypes: [],
+                    },
+                }
+            );
+        })(),
+        People: (() => {
+            return defineComponent(
+                world,
+                { player: RecsType.BigInt, people_count: RecsType.BigInt },
+                {
+                    metadata: {
+                        name: "People",
+                        types: ["contractaddress", "u256"],
+                        customTypes: [],
                     },
                 }
             );
