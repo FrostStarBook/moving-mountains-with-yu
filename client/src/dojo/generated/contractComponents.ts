@@ -13,8 +13,8 @@ export function defineContractComponents(world: World) {
                 {
                     metadata: {
                         name: "Architecture",
-                        types: ["contractaddress", "u256", "u256", "enum"],
-                        customTypes: ["Mold"],
+                        types: ["contractaddress", "u256", "u256", "u8"],
+                        customTypes: [],
                     },
                 }
             );

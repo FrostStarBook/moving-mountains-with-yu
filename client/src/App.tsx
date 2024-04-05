@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
+import { Mold } from "./utils";
 
 function App() {
     const {
         setup: {
-            systemCalls: { spawn, click, upgrade_base },
+            systemCalls: { spawn, click, upgrade_base, buy_architecture, upgrade_architecture, auto },
             clientComponents: { Architecture, People, Base },
         },
         account,
@@ -129,16 +130,23 @@ function App() {
                         升级 base
                     </button>
                     <button
-                        onClick={() => click(account.account)}
+                        onClick={() => buy_architecture(account.account, Mold.Realms)}
                     >
-                        Move Right
+                        购买建筑
                     </button>
                 </div>
                 <div>
                     <button
-                        onClick={() => click(account.account)}
+                        onClick={() => upgrade_architecture(account.account)}
                     >
-                        Move Down
+                        升级建筑
+                    </button>
+                </div>
+                <div>
+                    <button
+                        onClick={() => auto(account.account)}
+                    >
+                        建筑加人口
                     </button>
                 </div>
             </div>

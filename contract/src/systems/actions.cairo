@@ -4,9 +4,7 @@ trait IActions<TContractState> {
     fn spawn(self: @TContractState);
     fn click(self: @TContractState);
     fn upgrade_base(self: @TContractState);
-    fn buy_architecture(
-        self: @TContractState, mold: moving_mountains_with_yu::models::architecture::Mold
-    );
+    fn buy_architecture(self: @TContractState, mold: u8);
     fn upgrade_architecture(self: @TContractState);
     fn auto(self: @TContractState);
 }
@@ -17,9 +15,7 @@ mod actions {
     use super::IActions;
 
     use starknet::{ContractAddress, get_caller_address};
-    use moving_mountains_with_yu::models::{
-        base::Base, people::People, architecture::{Architecture, Mold}
-    };
+    use moving_mountains_with_yu::models::{base::Base, people::People, architecture::Architecture};
 
     #[event]
     #[derive(Drop, starknet::Event)]
@@ -53,7 +49,7 @@ mod actions {
                 world,
                 (
                     Base { player, add_people: 1, lv: 1 },
-                    Architecture { player, add_people: 1, lv: 1, mold: Mold::None },
+                    Architecture { player, add_people: 1, lv: 1, mold: 0 },
                 )
             );
         }
@@ -96,7 +92,7 @@ mod actions {
             emit!(world, Peopled { player, people_count });
         }
 
-        fn buy_architecture(self: @ContractState, mold: Mold) {
+        fn buy_architecture(self: @ContractState, mold: u8) {
             // Access the world dispatcher for reading.
             let world = self.world_dispatcher.read();
 
@@ -106,7 +102,7 @@ mod actions {
             let (mut architecture, mut people) = get!(world, player, (Architecture, People));
 
             // 购买建筑 ，需要消耗指定的 people
-            people.people_count -= 100;
+            people.people_count -= 10000;
             architecture.mold = mold;
             architecture.lv = 1;
             architecture.add_people = 500;
@@ -127,7 +123,7 @@ mod actions {
             let (mut architecture, mut people) = get!(world, player, (Architecture, People));
 
             // 购买建筑 ，需要消耗指定的 people
-            people.people_count -= architecture.lv * 100;
+            people.people_count -= architecture.lv * 1000;
             architecture.lv += 1;
             architecture.add_people += 100;
             let people_count = people.people_count;
