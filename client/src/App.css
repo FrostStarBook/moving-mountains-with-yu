@@ -1,9 +1,4 @@
-#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-}
+
 
 .logo {
     height: 6em;
@@ -47,4 +42,12 @@
 
 .success {
     color: green;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
 }

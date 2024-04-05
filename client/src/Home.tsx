@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDojo } from "./dojo/useDojo";
 import { useNavigate } from "react-router-dom";
+import homeImage from "./img/home.png";
 
 function Home() {
     const { account } = useDojo();
@@ -45,54 +46,68 @@ function Home() {
 
     return (
         <>
-            <button onClick={account?.create}>
-                {account?.isDeploying ? "deploying burner" : "create burner"}
-            </button>
-            {account && account?.list().length > 0 && (
-                <button onClick={async () => await account?.copyToClipboard()}>
-                    Save Burners to Clipboard
+            <div style={{ backgroundImage: `url(${homeImage})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '100vh' }}>
+                <button onClick={account?.create}>
+                    {account?.isDeploying ? "deploying burner" : "create burner"}
                 </button>
-            )}
-            <button onClick={handleRestoreBurners}>
-                Restore Burners from Clipboard
-            </button>
-            <div className="card">
-                <div>{`burners deployed: ${account.count}`}</div>
-                <div>
-                    select signer:{" "}
-                    <select
-                        value={account ? account.account.address : ""}
-                        onChange={(e) => account.select(e.target.value)}
-                    >
-                        {account?.list().map((account, index) => {
-                            return (
-                                <option value={account.address} key={index}>
-                                    {account.address}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div>
-                    <button onClick={() => account.clear()}>
-                        Clear burners
+                {account && account?.list().length > 0 && (
+                    <button onClick={async () => await account?.copyToClipboard()}>
+                        Save Burners to Clipboard
                     </button>
-                    <p>
-                        You will need to Authorise the contracts before you can
-                        use a burner. See readme.
-                    </p>
+                )}
+                <button onClick={handleRestoreBurners}>
+                    Restore Burners from Clipboard
+                </button>
+                <div className="card">
+                    <div>{`burners deployed: ${account.account.address}`}</div>
+                    <div>
+                        select signer:{" "}
+                        <select
+                            value={account ? account.account.address : ""}
+                            onChange={(e) => account.select(e.target.value)}
+                        >
+                            {account?.list().map((account, index) => {
+                                return (
+                                    <option value={account.address} key={index}>
+                                        {account.address}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                    <div>
+                        <button onClick={() => account.clear()}>
+                            Clear burners
+                        </button>
+                        <p>
+                            Please create burners before going to the game.
+                        </p>
+                    </div>
                 </div>
+
+                <div>
+                    <button onClick={handleNavigateToGame} style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)'
+                    }}>
+                        Go to Game
+                    </button>
+                </div>
+
+
+
+
+                {clipboardStatus.message && (
+                    <div className={clipboardStatus.isError ? "error" : "success"}>
+                        {clipboardStatus.message}
+                    </div>
+                )}
+
             </div>
 
 
-            <button onClick={handleNavigateToGame}>
-                Go to Game
-            </button>
-            {clipboardStatus.message && (
-                <div className={clipboardStatus.isError ? "error" : "success"}>
-                    {clipboardStatus.message}
-                </div>
-            )}
         </>
     );
 }

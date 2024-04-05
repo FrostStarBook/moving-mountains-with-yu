@@ -23,13 +23,12 @@ a {
 a:hover {
     color: #535bf2;
 }
-
 body {
     margin: 0;
-    display: flex;
-    place-items: center;
-    min-width: 320px;
-    min-height: 100vh;
+    padding: 0;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
 }
 
 h1 {
@@ -65,11 +64,16 @@ button:focus-visible {
     }
 
     a:hover {
-        color: #747bff;
+        color: #22c7f9;
     }
 
     button {
-        background-color: #f9f9f9;
+        background-color: #8f620f;
+        display: 'flex';
+        float: right;
+        :hover {
+            animation: pulsate 1s infinite;
+          }
     }
 }
 
