@@ -2,13 +2,12 @@
 
 import { Account, AccountInterface } from "starknet";
 import { DojoProvider } from "@dojoengine/core";
-import { Direction } from "../../utils";
+import { ContractComponents } from "./contractComponents";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
 export interface MoveProps {
     account: Account | AccountInterface;
-    direction: Direction;
 }
 
 export async function setupWorld(provider: DojoProvider) {
@@ -29,17 +28,15 @@ export async function setupWorld(provider: DojoProvider) {
             }
         };
 
-        const move = async ({ account, direction }: MoveProps) => {
+        const click = async ({ account }: any) => {
             try {
-                return await provider.execute(account, contract_name, "move", [
-                    direction,
-                ]);
+                return await provider.execute(account, contract_name, "click", []);
             } catch (error) {
                 console.error("Error executing move:", error);
                 throw error;
             }
         };
-        return { spawn, move };
+        return { spawn, click };
     }
     return {
         actions: actions(),

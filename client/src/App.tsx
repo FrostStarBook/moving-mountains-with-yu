@@ -9,8 +9,8 @@ import { useDojo } from "./dojo/useDojo";
 function App() {
     const {
         setup: {
-            systemCalls: { spawn, move },
-            clientComponents: { Position, Moves },
+            systemCalls: { spawn, click },
+            clientComponents: { Architecture, People, Base },
         },
         account,
     } = useDojo();
@@ -26,8 +26,14 @@ function App() {
     ]) as Entity;
 
     // get current component values
-    const position = useComponentValue(Position, entityId);
-    const moves = useComponentValue(Moves, entityId);
+    const architecture = useComponentValue(Architecture, entityId);
+    const people = useComponentValue(People, entityId);
+    const base = useComponentValue(Base, entityId);
+
+    console.log("a: " + architecture)
+    console.log("b: " + base)
+    console.log("p: " + people)
+    console.log("p.count: " + people?.people_count)
 
     const handleRestoreBurners = async () => {
         try {
@@ -100,27 +106,18 @@ function App() {
                     </p>
                 </div>
             </div>
-
+            
             <div className="card">
                 <button onClick={() => spawn(account.account)}>Spawn</button>
                 <div>
-                    Moves Left: {moves ? `${moves.remaining}` : "Need to Spawn"}
-                </div>
-                <div>
                     Position:{" "}
-                    {position
-                        ? `${position.vec.x}, ${position.vec.y}`
-                        : "Need to Spawn"}
                 </div>
             </div>
 
             <div className="card">
                 <div>
                     <button
-                        onClick={() =>
-                            position && position.vec.y > 0
-                                ? move(account.account, Direction.Up)
-                                : console.log("Reach the borders of the world.")
+                        onClick={() => click(account.account)
                         }
                     >
                         Move Up
@@ -128,23 +125,19 @@ function App() {
                 </div>
                 <div>
                     <button
-                        onClick={() =>
-                            position && position.vec.x > 0
-                                ? move(account.account, Direction.Left)
-                                : console.log("Reach the borders of the world.")
-                        }
+                        onClick={() => click(account.account)}
                     >
                         Move Left
                     </button>
                     <button
-                        onClick={() => move(account.account, Direction.Right)}
+                        onClick={() => click(account.account)}
                     >
                         Move Right
                     </button>
                 </div>
                 <div>
                     <button
-                        onClick={() => move(account.account, Direction.Down)}
+                        onClick={() => click(account.account)}
                     >
                         Move Down
                     </button>

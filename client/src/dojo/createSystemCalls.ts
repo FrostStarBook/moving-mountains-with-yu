@@ -13,29 +13,45 @@ import type { IWorld } from "./generated/generated";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
+enum Mold {
+    Briq,
+    Loot,
+    Realms,
+    CryptsAndCaverns,
+}
+
 export function createSystemCalls(
     { client }: { client: IWorld },
     contractComponents: ContractComponents,
-    { Position, Moves }: ClientComponents
+    { Architecture, Base, People }: ClientComponents
 ) {
     const spawn = async (account: AccountInterface) => {
         const entityId = getEntityIdFromKeys([
             BigInt(account.address),
         ]) as Entity;
 
-        const positionId = uuid();
-        Position.addOverride(positionId, {
+        const architectureId = uuid();
+        Architecture.addOverride(architectureId, {
             entity: entityId,
-            value: { player: BigInt(entityId), vec: { x: 10, y: 10 } },
+            value: { player: BigInt(entityId), add_people: BigInt(100), lv: BigInt(1), mold: Mold.Briq },
         });
 
-        const movesId = uuid();
-        Moves.addOverride(movesId, {
+        const baseId = uuid();
+        Base.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                remaining: 100,
-                last_direction: 0,
+                add_people: BigInt(5),
+                lv: BigInt(1),
+            },
+        });
+
+        const peopleId = uuid();
+        People.addOverride(peopleId, {
+            entity: entityId,
+            value: {
+                player: BigInt(entityId),
+                people_count: BigInt(1),
             },
         });
 
@@ -54,45 +70,51 @@ export function createSystemCalls(
             );
         } catch (e) {
             console.log(e);
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            Architecture.removeOverride(architectureId);
+            Base.removeOverride(baseId);
+            People.removeOverride(peopleId);
         } finally {
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            Architecture.removeOverride(architectureId);
+            People.removeOverride(peopleId);
         }
     };
 
-    const move = async (account: AccountInterface, direction: Direction) => {
+    const click = async (account: AccountInterface) => {
         const entityId = getEntityIdFromKeys([
             BigInt(account.address),
         ]) as Entity;
 
-        const positionId = uuid();
-        Position.addOverride(positionId, {
+        const architectureId = uuid();
+        Architecture.addOverride(architectureId, {
             entity: entityId,
             value: {
-                player: BigInt(entityId),
-                vec: updatePositionWithDirection(
-                    direction,
-                    getComponentValue(Position, entityId) as any
-                ).vec,
+                player: BigInt(entityId), add_people: getComponentValue(Architecture, entityId)?.add_people,
+                lv: getComponentValue(Architecture, entityId)?.lv, mold: getComponentValue(Architecture, entityId)?.mold
             },
         });
 
-        const movesId = uuid();
-        Moves.addOverride(movesId, {
+        const baseId = uuid();
+        Base.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                remaining:
-                    (getComponentValue(Moves, entityId)?.remaining || 0) - 1,
+                add_people: getComponentValue(Base, entityId)?.add_people,
+                lv: getComponentValue(Base, entityId)?.lv,
+            },
+        });
+
+        const peopleId = uuid();
+        People.addOverride(peopleId, {
+            entity: entityId,
+            value: {
+                player: BigInt(entityId),
+                people_count: getComponentValue(People, entityId)?.people_count,
             },
         });
 
         try {
-            const { transaction_hash } = await client.actions.move({
+            const { transaction_hash } = await client.actions.click({
                 account,
-                direction,
             });
 
             setComponentsFromEvents(
@@ -105,16 +127,18 @@ export function createSystemCalls(
             );
         } catch (e) {
             console.log(e);
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            Architecture.removeOverride(architectureId);
+            Base.removeOverride(baseId);
+            People.removeOverride(peopleId);
         } finally {
-            Position.removeOverride(positionId);
-            Moves.removeOverride(movesId);
+            Architecture.removeOverride(architectureId);
+            Base.removeOverride(baseId);
+            People.removeOverride(peopleId);
         }
     };
 
     return {
         spawn,
-        move,
+        click,
     };
 }
