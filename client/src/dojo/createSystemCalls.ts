@@ -131,8 +131,67 @@ export function createSystemCalls(
         }
     };
 
+    const upgrade_base = async (account: AccountInterface) => {
+        const entityId = getEntityIdFromKeys([
+            BigInt(account.address),
+        ]) as Entity;
+
+        const architectureId = uuid();
+        Architecture.addOverride(architectureId, {
+            entity: entityId,
+            value: {
+                player: BigInt(entityId), add_people: getComponentValue(Architecture, entityId)?.add_people,
+                lv: getComponentValue(Architecture, entityId)?.lv, mold: getComponentValue(Architecture, entityId)?.mold
+            },
+        });
+
+        const baseId = uuid();
+        Base.addOverride(baseId, {
+            entity: entityId,
+            value: {
+                player: BigInt(entityId),
+                add_people: getComponentValue(Base, entityId)?.add_people,
+                lv: getComponentValue(Base, entityId)?.lv,
+            },
+        });
+
+        const peopleId = uuid();
+        People.addOverride(peopleId, {
+            entity: entityId,
+            value: {
+                player: BigInt(entityId),
+                people_count: getComponentValue(People, entityId)?.people_count,
+            },
+        });
+
+        try {
+            const { transaction_hash } = await client.actions.upgrade_base({
+                account,
+            });
+
+            setComponentsFromEvents(
+                contractComponents,
+                getEvents(
+                    await account.waitForTransaction(transaction_hash, {
+                        retryInterval: 100,
+                    })
+                )
+            );
+        } catch (e) {
+            console.log(e);
+            Architecture.removeOverride(architectureId);
+            Base.removeOverride(baseId);
+            People.removeOverride(peopleId);
+        } finally {
+            Architecture.removeOverride(architectureId);
+            Base.removeOverride(baseId);
+            People.removeOverride(peopleId);
+        }
+    };
+
     return {
         spawn,
         click,
+        upgrade_base,
     };
 }

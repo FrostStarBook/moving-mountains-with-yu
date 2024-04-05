@@ -2,14 +2,13 @@ import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
 import { useEffect, useState } from "react";
 import "./App.css";
-import { Direction } from "./utils";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
 
 function App() {
     const {
         setup: {
-            systemCalls: { spawn, click },
+            systemCalls: { spawn, click, upgrade_base },
             clientComponents: { Architecture, People, Base },
         },
         account,
@@ -30,7 +29,7 @@ function App() {
     const people = useComponentValue(People, entityId);
     const base = useComponentValue(Base, entityId);
 
-    console.log("a: " + architecture?.add_people +"  " +  architecture?.lv + "  " + architecture?.mold)
+    console.log("a: " + architecture?.add_people + "  " + architecture?.lv + "  " + architecture?.mold)
     console.log("b: " + base?.add_people + "  " + base?.lv)
     console.log("p: " + people)
     console.log("p.count: " + people?.people_count)
@@ -106,7 +105,7 @@ function App() {
                     </p>
                 </div>
             </div>
-            
+
             <div className="card">
                 <button onClick={() => spawn(account.account)}>Spawn</button>
                 <div>
@@ -120,14 +119,14 @@ function App() {
                         onClick={() => click(account.account)
                         }
                     >
-                        Move Up
+                        点击加人口
                     </button>
                 </div>
                 <div>
                     <button
-                        onClick={() => click(account.account)}
+                        onClick={() => upgrade_base(account.account)}
                     >
-                        Move Left
+                        升级 base
                     </button>
                     <button
                         onClick={() => click(account.account)}

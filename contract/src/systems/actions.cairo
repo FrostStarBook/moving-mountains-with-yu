@@ -91,7 +91,7 @@ mod actions {
             base.add_people += 5;
             let people_count = people.people_count;
 
-            set!(world, (people));
+            set!(world, (people, base));
 
             emit!(world, Peopled { player, people_count });
         }
@@ -112,7 +112,7 @@ mod actions {
             architecture.add_people = 500;
             let people_count = people.people_count;
 
-            set!(world, (people));
+            set!(world, (people, architecture));
 
             emit!(world, Peopled { player, people_count });
         }
@@ -132,7 +132,7 @@ mod actions {
             architecture.add_people += 100;
             let people_count = people.people_count;
 
-            set!(world, (people));
+            set!(world, (people, architecture));
 
             emit!(world, Peopled { player, people_count });
         }
