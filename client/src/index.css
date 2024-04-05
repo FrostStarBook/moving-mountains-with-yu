@@ -66,15 +66,6 @@ button:focus-visible {
     a:hover {
         color: #22c7f9;
     }
-
-    button {
-        background-color: #8f620f;
-        display: 'flex';
-        float: right;
-        :hover {
-            animation: pulsate 1s infinite;
-          }
-    }
 }
 
 canvas {

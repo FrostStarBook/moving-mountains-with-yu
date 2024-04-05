@@ -51,3 +51,12 @@ body {
     background-size: cover;
     background-position: center;
 }
+
+#home{
+    background-color: #8f620f;
+            display: 'flex';
+            float: right;
+            :hover {
+                animation: pulsate 1s infinite;
+              }
+}

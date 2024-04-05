@@ -50,7 +50,7 @@ function App() {
             <div className="card">
                 <button onClick={() => spawn(account.account)}>Spawn</button>
                 <div>
-                    人数:{String(people?.people_count)}
+                    人数:{String(people?.people_count || 0)}
                 </div>
             </div>
 

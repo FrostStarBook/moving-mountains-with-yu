@@ -47,15 +47,15 @@ function Home() {
     return (
         <>
             <div style={{ backgroundImage: `url(${homeImage})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '100vh' }}>
-                <button onClick={account?.create}>
+                <button id="home" onClick={account?.create}>
                     {account?.isDeploying ? "deploying burner" : "create burner"}
                 </button>
                 {account && account?.list().length > 0 && (
-                    <button onClick={async () => await account?.copyToClipboard()}>
+                    <button id="home" onClick={async () => await account?.copyToClipboard()}>
                         Save Burners to Clipboard
                     </button>
                 )}
-                <button onClick={handleRestoreBurners}>
+                <button id="home" onClick={handleRestoreBurners}>
                     Restore Burners from Clipboard
                 </button>
                 <div className="card">
@@ -76,7 +76,7 @@ function Home() {
                         </select>
                     </div>
                     <div>
-                        <button onClick={() => account.clear()}>
+                        <button id="home" onClick={() => account.clear()}>
                             Clear burners
                         </button>
                         <p>
@@ -86,7 +86,7 @@ function Home() {
                 </div>
 
                 <div>
-                    <button onClick={handleNavigateToGame} style={{
+                    <button id="home" onClick={handleNavigateToGame} style={{
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
