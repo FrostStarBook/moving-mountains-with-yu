@@ -2,11 +2,10 @@
 
 import { Account, AccountInterface } from "starknet";
 import { DojoProvider } from "@dojoengine/core";
-import { ContractComponents } from "./contractComponents";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
-export interface MoveProps {
+export interface AccountProps {
     account: Account | AccountInterface;
 }
 
@@ -36,7 +35,45 @@ export async function setupWorld(provider: DojoProvider) {
                 throw error;
             }
         };
-        return { spawn, click };
+
+        const upgrade_base = async ({ account }: any) => {
+            try {
+                return await provider.execute(account, contract_name, "upgrade_base", []);
+            } catch (error) {
+                console.error("Error executing move:", error);
+                throw error;
+            }
+        };
+
+        const buy_architecture = async ({ account, mold }: any) => {
+            try {
+                return await provider.execute(account, contract_name, "buy_architecture", [mold]);
+            } catch (error) {
+                console.error("Error executing move:", error);
+                throw error;
+            }
+        };
+
+        const upgrade_architecture = async ({ account }: any) => {
+            try {
+                return await provider.execute(account, contract_name, "upgrade_architecture", []);
+            } catch (error) {
+                console.error("Error executing move:", error);
+                throw error;
+            }
+        };
+
+        const auto = async ({ account }: any) => {
+            try {
+                return await provider.execute(account, contract_name, "auto", []);
+            } catch (error) {
+                console.error("Error executing move:", error);
+                throw error;
+            }
+        };
+
+
+        return { spawn, click, upgrade_base, buy_architecture, upgrade_architecture, auto };
     }
     return {
         actions: actions(),

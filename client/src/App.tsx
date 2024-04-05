@@ -30,8 +30,8 @@ function App() {
     const people = useComponentValue(People, entityId);
     const base = useComponentValue(Base, entityId);
 
-    console.log("a: " + architecture)
-    console.log("b: " + base)
+    console.log("a: " + architecture?.add_people +"  " +  architecture?.lv + "  " + architecture?.mold)
+    console.log("b: " + base?.add_people + "  " + base?.lv)
     console.log("p: " + people)
     console.log("p.count: " + people?.people_count)
 
@@ -110,7 +110,7 @@ function App() {
             <div className="card">
                 <button onClick={() => spawn(account.account)}>Spawn</button>
                 <div>
-                    Position:{" "}
+                    人数:{String(people?.people_count)}
                 </div>
             </div>
 

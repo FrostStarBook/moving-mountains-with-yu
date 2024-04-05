@@ -53,7 +53,7 @@ mod actions {
                 world,
                 (
                     Base { player, add_people: 1, lv: 1 },
-                    Architecture { player, add_people: 10, lv: 1, mold: Mold::Briq },
+                    Architecture { player, add_people: 1, lv: 1, mold: Mold::None },
                 )
             );
         }

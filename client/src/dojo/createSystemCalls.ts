@@ -2,7 +2,6 @@ import { AccountInterface } from "starknet";
 import { Entity, getComponentValue } from "@dojoengine/recs";
 import { uuid } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
-import { Direction, updatePositionWithDirection } from "../utils";
 import {
     getEntityIdFromKeys,
     getEvents,
@@ -10,15 +9,10 @@ import {
 } from "@dojoengine/utils";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
+import { Mold } from "../utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
-enum Mold {
-    Briq,
-    Loot,
-    Realms,
-    CryptsAndCaverns,
-}
 
 export function createSystemCalls(
     { client }: { client: IWorld },
@@ -33,7 +27,7 @@ export function createSystemCalls(
         const architectureId = uuid();
         Architecture.addOverride(architectureId, {
             entity: entityId,
-            value: { player: BigInt(entityId), add_people: BigInt(100), lv: BigInt(1), mold: Mold.Briq },
+            value: { player: BigInt(entityId), add_people: BigInt(1), lv: BigInt(1), mold: Mold.None },
         });
 
         const baseId = uuid();
@@ -41,7 +35,7 @@ export function createSystemCalls(
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                add_people: BigInt(5),
+                add_people: BigInt(1),
                 lv: BigInt(1),
             },
         });
