@@ -42,14 +42,15 @@ function App() {
 
     const [progressWidth, setProgressWidth] = useState(0);
 
-    let total = 10000;
-    
+    const [total, setTotal] = useState(10000);
+
     useEffect(() => {
         const interval = setInterval(() => {
             if (people?.people_count) {
                 const newWidth = (Number(people.people_count) / total) * 100; // Adjust the calculation as needed
-                if(newWidth >= 100) {
-                    total += total * 5
+                if (newWidth >= 100) {
+                    console.log("setTotal")
+                    setTotal(total * 5)
                 }
                 setProgressWidth(newWidth);
             }
@@ -58,10 +59,20 @@ function App() {
         return () => clearInterval(interval);
     }, [people?.people_count]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTotal(total => total);
+        }, 1000)
+
+        return () => clearInterval(interval);
+    }, [people?.people_count]);
+
+
+
 
     return (
         <>
-             <div style={{ textAlign: "center" }}>下一目标人口： {total}</div>
+            <div style={{ textAlign: "center" }}>下一目标人口： {total}</div>
             <div className="progress-bar" style={{ height: "30px" }}>
                 <div className="progress" style={{ width: "100%", backgroundColor: "lightgray", height: "30px", borderRadius: "10px" }}>
                     <div className="progress" style={{ width: `${progressWidth}%`, backgroundColor: "pink", height: "100%", borderRadius: "10px" }}>
