@@ -30,11 +30,6 @@ function App() {
     const people = useComponentValue(People, entityId);
     const base = useComponentValue(Base, entityId);
 
-    console.log("a: " + architecture?.add_people + "  " + architecture?.lv + "  " + architecture?.mold)
-    console.log("b: " + base?.add_people + "  " + base?.lv)
-    console.log("p: " + people)
-    console.log("p.count: " + people?.people_count)
-
     useEffect(() => {
         if (clipboardStatus.message) {
             const timer = setTimeout(() => {
@@ -45,8 +40,30 @@ function App() {
         }
     }, [clipboardStatus.message]);
 
+    const [progressWidth, setProgressWidth] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (people?.people_count) {
+                const newWidth = (Number(people.people_count) / 10000000000) * 100; // Adjust the calculation as needed
+                setProgressWidth(newWidth);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [people?.people_count]);
+
+
     return (
         <>
+            <div className="progress-bar" style={{ height: "30px" }}>
+                <div className="progress" style={{ width: "100%", backgroundColor: "lightgray", height: "30px", borderRadius: "10px" }}>
+                    <div className="progress" style={{ width: `${progressWidth}%`, backgroundColor: "pink", height: "100%", borderRadius: "10px" }}>
+                        {progressWidth}%
+                    </div>
+                </div>
+                <div style={{ textAlign: "right" }}>人口： 100亿</div>
+            </div>
             <div className="card">
                 <button onClick={() => spawn(account.account)}>Spawn</button>
                 <div>
