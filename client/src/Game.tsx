@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
-import { Mold} from "./utils";
+import { Mold } from "./utils";
+import { Modal, Option } from "./Modal";
+import briqImage from './img/architecture/briq.jpg';
+import lootImage from './img/architecture/loot.jpg';
+import realmsImage from './img/architecture/realms.jpg';
+import c_a_cImage from './img/architecture/c&c.png';
 
 function App() {
     const {
@@ -51,6 +56,42 @@ function App() {
         return () => clearInterval(interval);
     }, [people?.people_count]);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const options: Option[] = [
+        { label: 'Purchase consumes 10000 offspring, increasing by 500 offspring per second.', value: 1, image: briqImage },
+        { label: 'Purchase consumes 1000000 offspring, increasing by 50000 offspring per second.', value: 2, image: lootImage },
+        { label: 'Purchase consumes 100000000 offspring, increasing by 5000000 offspring per second.', value: 3, image: realmsImage },
+        { label: 'Purchase consumes 10000000000 offspring, increasing by 500000000 offspring per second.', value: 4, image: c_a_cImage },
+    ];
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    const handleSubmit = (selectedOption: number) => {
+        buy_architecture(account.account, selectedOption)
+    };
+
+    const mold = architecture?.mold || 0;
+
+    let imageSrc;
+    switch (mold) {
+        case 1:
+            imageSrc = briqImage;
+            break;
+        case 2:
+            imageSrc = lootImage;
+            break;
+        case 3:
+            imageSrc = realmsImage;
+            break;
+        case 4:
+            imageSrc = c_a_cImage;
+            break;
+    }
+
+
+
 
     return (
         <>
@@ -69,19 +110,24 @@ function App() {
                         Currently there are <span style={{ color: "red" }}> {Number(people?.people_count || 0)}</span> descendants in total
                     </div>
                     <div>
-                        base 点击增加人口数:{String(base?.add_people || 0)}
+                        The base click increases the number of offspring:{String(base?.add_people || 0)}
                     </div>
                     <div>
-                        base 等级:{String(base?.lv || 0)}
+                        The base level:{String(base?.lv || 0)}
+                    </div>
+
+                    <div>
+                        The current totem<img src={imageSrc} style={{ width: '100px', height: '100px' }} />
                     </div>
                     <div>
-                        建筑物每秒增加人口数:{String(architecture?.add_people || 0)}
+                        The totem level:{String(architecture?.lv || 0)}
                     </div>
                     <div>
-                        建筑物 等级:{String(architecture?.lv || 0)}
+                        The totem increases the number of offspring per second:{String(architecture?.add_people || 0)}
                     </div>
                     <div>
-                        建筑物 购买类型:{String(architecture?.mold || 0)}
+                        <button onClick={openModal}>Purchase a totem</button>
+                        <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleSubmit} options={options} />
                     </div>
                 </div>
 
@@ -97,19 +143,14 @@ function App() {
                         <button
                             onClick={() => upgrade_base(account.account)}
                         >
-                            升级 base
-                        </button>
-                        <button
-                            onClick={() => buy_architecture(account.account, Mold.Briq)}
-                        >
-                            购买建筑
+                            Upgrade basic click
                         </button>
                     </div>
                     <div>
                         <button
                             onClick={() => upgrade_architecture(account.account)}
                         >
-                            升级建筑
+                            Upgrade the totem
                         </button>
                     </div>
                     <div>
@@ -123,7 +164,7 @@ function App() {
                                 }
                             }}
                         >
-                            建筑加人口
+                            Activating the totem increases offspring
                         </button>
                     </div>
                 </div>
