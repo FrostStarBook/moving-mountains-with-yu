@@ -30,6 +30,21 @@ function App() {
     const people = useComponentValue(People, entityId);
     const base = useComponentValue(Base, entityId);
 
+    const [isSwapButtonVisible, setIsSwapButtonVisible] = useState(true);
+    const [isClickButtonVisible, setIsClickButtonVisible] = useState(false);
+
+    const handleSwapButtonClick = () => {
+        if(Number(base?.lv) < 1){
+            spawn(account.account)
+        }
+        setIsSwapButtonVisible(false); // Hide the Swap button
+        setIsClickButtonVisible(true); // Show Click button
+    };
+
+    const handleButtonClick = () => {
+        click(account.account)
+    };
+
     const [progressWidth, setProgressWidth] = useState(0);
 
     const [total, setTotal] = useState(10000);
@@ -105,7 +120,14 @@ function App() {
                     </div>
                 </div>
                 <div className="card">
-                    <button onClick={() => spawn(account.account)}>Spawn</button>
+                    <div>
+                        {isSwapButtonVisible && (
+                            <button onClick={handleSwapButtonClick}>Swap</button>
+                        )}
+                        {isClickButtonVisible && (
+                            <button className="button-with-click" onClick={handleButtonClick}></button>
+                        )}
+                    </div>
                     <div className="text-current-people">
                         Currently there are <span style={{ color: "red" }}> {Number(people?.people_count || 0)}</span> descendants in total
                     </div>
@@ -132,13 +154,6 @@ function App() {
                 </div>
 
                 <div className="card">
-                    <div>
-                        <button className="button-with-click"
-                            onClick={() => click(account.account)
-                            }
-                        >
-                        </button>
-                    </div>
                     <div>
                         <button
                             onClick={() => upgrade_base(account.account)}
