@@ -14,60 +14,55 @@
     -webkit-text-size-adjust: 100%;
 }
 
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-
-a:hover {
-    color: #535bf2;
-}
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-}
-
-h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-}
-
-button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
-}
-
-button:hover {
-    border-color: #646cff;
-}
-
-button:focus,
-button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-
-    a:hover {
-        color: #22c7f9;
-    }
-}
-
 canvas {
     display: block;
+}
+
+.background-image {
+    background-image: url("./img/game_background.png");
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 1000px;
+    z-index: -10;
+    zoom: 1;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
+}
+
+.button-with-click {
+    position: absolute;
+    background-image: url('./img/house.png');
+    background-size: cover;
+    width: 150px;
+    height: 150px;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    transition: transform 0.3s;
+}
+.button-with-click:active {
+    transform: scale(3);
+}
+.text-target {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    font-size: 20px;
+}
+.text-current-people {
+    font-size: 50px;
+    font-weight: 1000;
+    color: rgb(44, 248, 214);
+    text-align: center;
 }

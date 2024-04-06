@@ -44,14 +44,6 @@
     color: green;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-}
-
 #home{
     background-color: #8f620f;
             display: 'flex';
