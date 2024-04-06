@@ -52,6 +52,21 @@ function App() {
                 <div>
                     人数:{String(people?.people_count || 0)}
                 </div>
+                <div>
+                    base 点击增加人口数:{String(base?.add_people || 0)}
+                </div>
+                <div>
+                    base 等级:{String(base?.lv || 0)}
+                </div>
+                <div>
+                    建筑物每秒增加人口数:{String(architecture?.add_people || 0)}
+                </div>
+                <div>
+                    建筑物 等级:{String(architecture?.lv || 0)}
+                </div>
+                <div>
+                    建筑物 购买类型:{String(architecture?.mold || 0)}
+                </div>
             </div>
 
             <div className="card">
@@ -84,7 +99,14 @@ function App() {
                 </div>
                 <div>
                     <button
-                        onClick={() => auto(account.account)}
+                        onClick={() => {
+                            if (Number(architecture?.lv) !== 0) {
+                                auto(account.account);
+                                setInterval(() => {
+                                    auto(account.account);
+                                }, 1000);
+                            }
+                        }}
                     >
                         建筑加人口
                     </button>

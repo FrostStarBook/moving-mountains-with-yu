@@ -29,6 +29,37 @@ mod actions {
         people_count: u256,
     }
 
+    // Briq = 1,
+    // Loot = 2,
+    // Realms = 3,
+    // CryptsAndCaverns = 4
+    fn buy_architecture_innner(
+        mold: u8, mut people: People, mut architecture: Architecture
+    ) -> (People, Architecture) {
+        if mold == 1 {
+            people.people_count -= 10000;
+            architecture.mold = mold;
+            architecture.lv = 1;
+            architecture.add_people = 500;
+        } else if mold == 2 {
+            people.people_count -= 1000000;
+            architecture.mold = mold;
+            architecture.lv = 1;
+            architecture.add_people = 50000;
+        } else if mold == 3 {
+            people.people_count -= 100000000;
+            architecture.mold = mold;
+            architecture.lv = 1;
+            architecture.add_people = 5000000;
+        } else if mold == 4 {
+            people.people_count -= 10000000000;
+            architecture.mold = mold;
+            architecture.lv = 1;
+            architecture.add_people = 500000000;
+        }
+        (people, architecture)
+    }
+
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
         fn spawn(self: @ContractState) {
@@ -49,7 +80,7 @@ mod actions {
                 world,
                 (
                     Base { player, add_people: 1, lv: 1 },
-                    Architecture { player, add_people: 1, lv: 1, mold: 0 },
+                    Architecture { player, add_people: 0, lv: 0, mold: 0 },
                 )
             );
         }
@@ -101,14 +132,11 @@ mod actions {
 
             let (mut architecture, mut people) = get!(world, player, (Architecture, People));
 
-            // 购买建筑 ，需要消耗指定的 people
-            people.people_count -= 10000;
-            architecture.mold = mold;
-            architecture.lv = 1;
-            architecture.add_people = 500;
-            let people_count = people.people_count;
+            // 购买不同建筑,需要消耗相应的 people
+            let (p, a) = buy_architecture_innner(mold, people, architecture);
+            let people_count = p.people_count;
 
-            set!(world, (people, architecture));
+            set!(world, (p, a));
 
             emit!(world, Peopled { player, people_count });
         }
@@ -122,10 +150,10 @@ mod actions {
 
             let (mut architecture, mut people) = get!(world, player, (Architecture, People));
 
-            // 购买建筑 ，需要消耗指定的 people
-            people.people_count -= architecture.lv * 20000;
+            // 升级建筑 ，需要消耗指定的 people
+            people.people_count -= architecture.lv * architecture.add_people;
             architecture.lv += 1;
-            architecture.add_people += 500;
+            architecture.add_people += architecture.add_people;
             let people_count = people.people_count;
 
             set!(world, (people, architecture));
