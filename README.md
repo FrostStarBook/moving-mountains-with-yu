@@ -6,9 +6,12 @@ With the upgrades of 4844, the gas consumption has become extremely low. Moreove
 
 The unit of production is Blobert, which represents the population generated with each click. This is a virtual world, so there's no rigid generation of people.
 
-Once upon a time, there were two large mountains - Taihang Mountain and Wangwu Mountain, which sat in front of an old man Yu’s house. Because the mountains blocked the way, the Yu’s families had to walk many extra miles in order to go out. One day, Yu called together the whole family to discuss removing the mountains. His wife shook her head and said：“Where are we going to put the earth and sand we dug out?”The others said：“We can dump it in the sea.”
+
 
 The background story is based on a proverb.
+---
+
+Once upon a time, there were two large mountains - Taihang Mountain and Wangwu Mountain, which sat in front of an old man Yu’s house. Because the mountains blocked the way, the Yu’s families had to walk many extra miles in order to go out. One day, Yu called together the whole family to discuss removing the mountains. His wife shook her head and said：“Where are we going to put the earth and sand we dug out?”The others said：“We can dump it in the sea.”
 ---
 
 The next day in the early morning, Yu began digging the mountain with his families. An old man called Zhi Sou saw them working and laughed: "Mr. Fool, you're so old and weak. Why do you want to remove the mountains? You won’t be able to remove it even before you die!" Yu smiled and said:”Your mind is so stubborn and old. If I die, there will be my sons. Sons will have grandsons and grandsons will have sons. There will be no end, but the mountain will not grow. As time goes on, the mountains will be removed one day!” Zhi Sou said nothing and left.
