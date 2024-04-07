@@ -1,0 +1,9 @@
+kind = "DojoContract"
+class_hash = "0x13a32b33353b48c62703828ccd8d287896d2d2ba052e750f5ada258d4ca2858"
+original_class_hash = "0x13a32b33353b48c62703828ccd8d287896d2d2ba052e750f5ada258d4ca2858"
+base_class_hash = "0x0"
+abi = "manifests/dev/abis/base/contracts/moving_mountains_with_yu_systems_actions_actions.json"
+reads = []
+writes = []
+computed = []
+name = "moving_mountains_with_yu::systems::actions::actions"

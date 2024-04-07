@@ -1,0 +1,20 @@
+kind = "DojoModel"
+class_hash = "0x61905ddb39681cf0be32895fbb9bc91ce0d76fec061d2068c7b5a19103862b7"
+original_class_hash = "0x61905ddb39681cf0be32895fbb9bc91ce0d76fec061d2068c7b5a19103862b7"
+abi = "manifests/dev/abis/base/models/moving_mountains_with_yu_models_base_click_base_click.json"
+name = "moving_mountains_with_yu::models::base_click::base_click"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "add_people"
+type = "u256"
+key = false
+
+[[members]]
+name = "lv"
+type = "u256"
+key = false

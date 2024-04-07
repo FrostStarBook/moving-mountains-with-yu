@@ -1,0 +1,25 @@
+kind = "DojoModel"
+class_hash = "0x79b84a9462c13925206294c7e4b061534f83281e953e2c95c10133851734b2f"
+original_class_hash = "0x79b84a9462c13925206294c7e4b061534f83281e953e2c95c10133851734b2f"
+abi = "manifests/dev/abis/base/models/moving_mountains_with_yu_models_weapon_weapon.json"
+name = "moving_mountains_with_yu::models::weapon::weapon"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "subtract_people"
+type = "u256"
+key = false
+
+[[members]]
+name = "lv"
+type = "u256"
+key = false
+
+[[members]]
+name = "weapon_type"
+type = "u8"
+key = false
