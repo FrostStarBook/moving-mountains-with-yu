@@ -1,12 +1,11 @@
 import { useComponentValue } from "@dojoengine/react";
 import { Entity } from "@dojoengine/recs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
-import { Mold } from "./utils";
 import { Modal, Option } from "./Modal";
-import briqImage from './img/architecture/briq.jpg';
+import blobertsImage from './img/architecture/bloberts.jpg';
 import lootImage from './img/architecture/loot.jpg';
 import realmsImage from './img/architecture/realms.jpg';
 import c_a_cImage from './img/architecture/c&c.png';
@@ -15,7 +14,7 @@ function App() {
     const {
         setup: {
             systemCalls: { spawn, click, upgrade_base, buy_architecture, upgrade_architecture, auto },
-            clientComponents: { Architecture, People, Base },
+            clientComponents: { Architecture, People, BaseClick },
         },
         account,
     } = useDojo();
@@ -28,14 +27,18 @@ function App() {
     // get current component values
     const architecture = useComponentValue(Architecture, entityId);
     const people = useComponentValue(People, entityId);
-    const base = useComponentValue(Base, entityId);
+    const baseClick = useComponentValue(BaseClick, entityId);
+    console.log("baseClick" + baseClick?.add_people + baseClick?.lv)
+    console.log("architecture" + architecture?.lv)
+    console.log("people" + people?.people_count)
 
     const [isSwapButtonVisible, setIsSwapButtonVisible] = useState(true);
     const [isClickButtonVisible, setIsClickButtonVisible] = useState(false);
 
     const handleSwapButtonClick = () => {
-        if(Number(base?.lv) < 1){
+        if (baseClick == undefined) {
             spawn(account.account)
+            console.log("spawn")
         }
         setIsSwapButtonVisible(false); // Hide the Swap button
         setIsClickButtonVisible(true); // Show Click button
@@ -43,6 +46,7 @@ function App() {
 
     const handleButtonClick = () => {
         click(account.account)
+        setAnimate(true);
     };
 
     const [progressWidth, setProgressWidth] = useState(0);
@@ -66,6 +70,9 @@ function App() {
     useEffect(() => {
         const interval = setInterval(() => {
             setTotal(total => total);
+            if (architecture != undefined && Number(architecture?.lv) !== 0 ) {
+                auto(account.account);
+            }
         }, 1000)
 
         return () => clearInterval(interval);
@@ -74,10 +81,10 @@ function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const options: Option[] = [
-        { label: 'Purchase consumes 10000 offspring, increasing by 500 offspring per second.', value: 1, image: briqImage },
+        { label: 'Purchase consumes 10000 offspring, increasing by 500 offspring per second.', value: 1, image: c_a_cImage },
         { label: 'Purchase consumes 1000000 offspring, increasing by 50000 offspring per second.', value: 2, image: lootImage },
         { label: 'Purchase consumes 100000000 offspring, increasing by 5000000 offspring per second.', value: 3, image: realmsImage },
-        { label: 'Purchase consumes 10000000000 offspring, increasing by 500000000 offspring per second.', value: 4, image: c_a_cImage },
+        { label: 'Purchase consumes 10000000000 offspring, increasing by 500000000 offspring per second.', value: 4, image: blobertsImage },
     ];
 
     const openModal = () => setIsModalOpen(true);
@@ -92,7 +99,7 @@ function App() {
     let imageSrc;
     switch (mold) {
         case 1:
-            imageSrc = briqImage;
+            imageSrc = c_a_cImage;
             break;
         case 2:
             imageSrc = lootImage;
@@ -101,9 +108,27 @@ function App() {
             imageSrc = realmsImage;
             break;
         case 4:
-            imageSrc = c_a_cImage;
+            imageSrc = blobertsImage;
             break;
     }
+
+    const [animate, setAnimate] = useState(false);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (animate) {
+            timer = setTimeout(() => {
+                setAnimate(false); // 两秒后停止动画
+            }, 2000);
+        }
+        return () => clearTimeout(timer); // 在组件卸载时清除定时器
+    }, [animate]);
+
+
+    const ahandleButtonClick = () => {
+        setAnimate(true); // 点击按钮开始动画
+    };
+
 
 
 
@@ -119,69 +144,67 @@ function App() {
                         </div>
                     </div>
                 </div>
-                <div className="card">
+                <div>
                     <div>
                         {isSwapButtonVisible && (
-                            <button onClick={handleSwapButtonClick}>Swap</button>
+                            <button className="button-with-spawn" onClick={handleSwapButtonClick}></button>
                         )}
                         {isClickButtonVisible && (
-                            <button className="button-with-click" onClick={handleButtonClick}></button>
+                            <button className="button-with-click" onClick={handleButtonClick}>
+                            </button>
+
                         )}
                     </div>
                     <div className="text-current-people">
                         Currently there are <span style={{ color: "red" }}> {Number(people?.people_count || 0)}</span> descendants in total
                     </div>
-                    <div>
-                        The base click increases the number of offspring:{String(base?.add_people || 0)}
+                    <div className="base">
+                        The base click increases the number of offspring: <span style={{ color: "red" }}>{String(baseClick?.add_people || 0)}</span>
                     </div>
-                    <div>
-                        The base level:{String(base?.lv || 0)}
+                    <div className="base">
+                        The base level:<span style={{ color: "red" }}>{String(baseClick?.lv || 0)}</span>
+                    </div>
+
+                    <div id="animationContainer">
+                        {animate && <div className="runningAnimation"></div>} { }
                     </div>
 
                     <div>
-                        The current totem<img src={imageSrc} style={{ width: '100px', height: '100px' }} />
+                        <button className="button-with-architecture"
+                        >
+                            <span style={{ color: "red", fontSize: "20px" }}>The current totem</span>
+
+                            <img className="rotating-image" src={imageSrc} style={{ width: '100px', height: '100px' }} />
+                        </button>
                     </div>
-                    <div>
-                        The totem level:{String(architecture?.lv || 0)}
+                    <div className="architecture-lv">
+                        The totem level: <span style={{ color: "red" }}> {String(architecture?.lv || 0)}</span>
                     </div>
-                    <div>
-                        The totem increases the number of offspring per second:{String(architecture?.add_people || 0)}
-                    </div>
-                    <div>
-                        <button onClick={openModal}>Purchase a totem</button>
-                        <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleSubmit} options={options} />
+                    <div className="architecture-add-people">
+                        The totem increases the number of offspring per second:  <span style={{ color: "red" }}>{String(architecture?.add_people || 0)} </span>
                     </div>
                 </div>
 
-                <div className="card">
-                    <div>
-                        <button
+                <div>
+                    <div className="card">
+                        <button className="button"
                             onClick={() => upgrade_base(account.account)}
                         >
                             Upgrade basic click
                         </button>
                     </div>
-                    <div>
-                        <button
+                    <div className="card">
+                        <button className="button"
                             onClick={() => upgrade_architecture(account.account)}
                         >
                             Upgrade the totem
                         </button>
                     </div>
-                    <div>
-                        <button
-                            onClick={() => {
-                                if (Number(architecture?.lv) !== 0) {
-                                    auto(account.account);
-                                    setInterval(() => {
-                                        auto(account.account);
-                                    }, 1000);
-                                }
-                            }}
-                        >
-                            Activating the totem increases offspring
-                        </button>
+                    <div className="card">
+                        <button className="button" onClick={openModal}>Purchase a totem</button>
+                        <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleSubmit} options={options} />
                     </div>
+
                 </div>
             </div>
         </>

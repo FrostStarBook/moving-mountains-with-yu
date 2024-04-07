@@ -3,9 +3,10 @@ mod systems {
 }
 
 mod models {
-    mod base;
+    mod base_click;
     mod people;
     mod architecture;
+    mod weapon;
 }
 
 mod tests {

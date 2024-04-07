@@ -1,10 +1,10 @@
 use starknet::ContractAddress;
 
 #[derive(Model, Drop, Serde)]
-struct Base {
+struct Weapon {
     #[key]
     player: ContractAddress,
-    add_people: u256,
+    subtract_people: u256,
     lv: u256,
+    weapon_type: u8,
 }
-

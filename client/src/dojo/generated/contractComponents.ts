@@ -19,13 +19,13 @@ export function defineContractComponents(world: World) {
                 }
             );
         })(),
-        Base: (() => {
+        BaseClick: (() => {
             return defineComponent(
                 world,
                 { player: RecsType.BigInt, add_people: RecsType.BigInt, lv: RecsType.BigInt },
                 {
                     metadata: {
-                        name: "Base",
+                        name: "BaseClick",
                         types: ["contractaddress", "u256", "u256"],
                         customTypes: [],
                     },

@@ -11,8 +11,8 @@ mod tests {
     // import test utils
     use moving_mountains_with_yu::{
         models::{
-            base::{Base, base}, people::{People, people},
-            architecture::{Architecture, Mold, architecture}
+            base_click::{BaseClick, base_click}, people::{People, people},
+            architecture::{Architecture, architecture}
         },
         systems::{actions::{actions, IActionsDispatcher, IActionsDispatcherTrait}},
     };
@@ -24,7 +24,7 @@ mod tests {
         let caller = starknet::contract_address_const::<0x0>();
 
         // models
-        let mut models = array![base::TEST_CLASS_HASH, people::TEST_CLASS_HASH];
+        let mut models = array![base_click::TEST_CLASS_HASH, people::TEST_CLASS_HASH];
 
         // deploy world with models
         let world = spawn_test_world(models);

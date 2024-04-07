@@ -11,7 +11,7 @@ export function createClientComponents({
     return {
         ...contractComponents,
         People: overridableComponent(contractComponents.People),
-        Base: overridableComponent(contractComponents.Base),
+        BaseClick: overridableComponent(contractComponents.BaseClick),
         Architecture: overridableComponent(contractComponents.Architecture),
     };
 }

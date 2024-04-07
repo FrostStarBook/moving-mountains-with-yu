@@ -76,10 +76,26 @@ function Home() {
                         </select>
                     </div>
                     <div>
-                        <button id="home" onClick={() => account.clear()}>
+                        <button id="home" onClick={() => account.clear()} style={{
+                            position: 'absolute',
+                            top: '10%',
+                            left: '95%',
+                            transform: 'translate(-50%, -50%)'
+                        }}>
                             Clear burners
                         </button>
-                        <p>
+                    </div>
+
+                    <div>
+
+                        <p style={{
+                            position: 'absolute',
+                            top: '30%',
+                            left: '50%',
+                            color: 'red',
+                            transform: 'translate(-50%, -50%)'
+                        }
+                        }>
                             Please create burners before going to the game.
                         </p>
                     </div>

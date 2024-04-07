@@ -17,7 +17,7 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 export function createSystemCalls(
     { client }: { client: IWorld },
     contractComponents: ContractComponents,
-    { Architecture, Base, People }: ClientComponents
+    { Architecture, BaseClick, People }: ClientComponents
 ) {
     const spawn = async (account: AccountInterface) => {
         const entityId = getEntityIdFromKeys([
@@ -31,7 +31,7 @@ export function createSystemCalls(
         });
 
         const baseId = uuid();
-        Base.addOverride(baseId, {
+        BaseClick.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
@@ -65,7 +65,7 @@ export function createSystemCalls(
         } catch (e) {
             console.log(e);
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         } finally {
             Architecture.removeOverride(architectureId);
@@ -88,12 +88,12 @@ export function createSystemCalls(
         });
 
         const baseId = uuid();
-        Base.addOverride(baseId, {
+        BaseClick.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                add_people: getComponentValue(Base, entityId)?.add_people,
-                lv: getComponentValue(Base, entityId)?.lv,
+                add_people: getComponentValue(BaseClick, entityId)?.add_people,
+                lv: getComponentValue(BaseClick, entityId)?.lv,
             },
         });
 
@@ -120,13 +120,12 @@ export function createSystemCalls(
                 )
             );
         } catch (e) {
-            console.log(e);
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         } finally {
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         }
     };
@@ -146,12 +145,12 @@ export function createSystemCalls(
         });
 
         const baseId = uuid();
-        Base.addOverride(baseId, {
+        BaseClick.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                add_people: getComponentValue(Base, entityId)?.add_people,
-                lv: getComponentValue(Base, entityId)?.lv,
+                add_people: getComponentValue(BaseClick, entityId)?.add_people,
+                lv: getComponentValue(BaseClick, entityId)?.lv,
             },
         });
 
@@ -180,11 +179,11 @@ export function createSystemCalls(
         } catch (e) {
             console.log(e);
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         } finally {
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         }
     };
@@ -204,12 +203,12 @@ export function createSystemCalls(
         });
 
         const baseId = uuid();
-        Base.addOverride(baseId, {
+        BaseClick.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                add_people: getComponentValue(Base, entityId)?.add_people,
-                lv: getComponentValue(Base, entityId)?.lv,
+                add_people: getComponentValue(BaseClick, entityId)?.add_people,
+                lv: getComponentValue(BaseClick, entityId)?.lv,
             },
         });
 
@@ -238,11 +237,11 @@ export function createSystemCalls(
         } catch (e) {
             console.log(e);
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         } finally {
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         }
     };
@@ -262,12 +261,12 @@ export function createSystemCalls(
         });
 
         const baseId = uuid();
-        Base.addOverride(baseId, {
+        BaseClick.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                add_people: getComponentValue(Base, entityId)?.add_people,
-                lv: getComponentValue(Base, entityId)?.lv,
+                add_people: getComponentValue(BaseClick, entityId)?.add_people,
+                lv: getComponentValue(BaseClick, entityId)?.lv,
             },
         });
 
@@ -296,11 +295,11 @@ export function createSystemCalls(
         } catch (e) {
             console.log(e);
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         } finally {
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         }
     };
@@ -320,12 +319,12 @@ export function createSystemCalls(
         });
 
         const baseId = uuid();
-        Base.addOverride(baseId, {
+        BaseClick.addOverride(baseId, {
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                add_people: getComponentValue(Base, entityId)?.add_people,
-                lv: getComponentValue(Base, entityId)?.lv,
+                add_people: getComponentValue(BaseClick, entityId)?.add_people,
+                lv: getComponentValue(BaseClick, entityId)?.lv,
             },
         });
 
@@ -354,11 +353,11 @@ export function createSystemCalls(
         } catch (e) {
             console.log(e);
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         } finally {
             Architecture.removeOverride(architectureId);
-            Base.removeOverride(baseId);
+            BaseClick.removeOverride(baseId);
             People.removeOverride(peopleId);
         }
     };
